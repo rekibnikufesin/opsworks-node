@@ -9,6 +9,3 @@ when 'debian'
     keyserver node['nodejs']['keyserver']
     key node['nodejs']['key']
   end
-when 'rhel'
-  include_recipe 'yum-epel'
-end
