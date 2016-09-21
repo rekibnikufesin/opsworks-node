@@ -1,3 +1,0 @@
-[submodule "nodejs"]
-	path = nodejs
-	url = git@github.com:redguide/nodejs.git
