@@ -15,11 +15,17 @@ layers = instance['role'] # the attribute formerly known as 'layers' via opswork
 
 if layers.include?("api-layer")
     Chef::Log.info("** setting container to api")
-    normal[:deploy]["app"][:environment_variables]["CONTAINER"] = "api"
+    execute 'set api env var' do
+      command 'export CONTAINER="api"'
+    end
 elsif layers.include?("web-layer")
     Chef::Log.info("** setting container to web")
-    normal[:deploy]["app"][:environment_variables]["CONTAINER"] = "web"
+    execute 'set api env var' do
+      command 'export CONTAINER="web"'
+    end
 else
     Chef::Log.info("** setting container to unknown")
-    normal[:deploy]["app"][:environment_variables]["CONTAINER"] = "unknown"
+    execute 'set api env var' do
+      command 'export CONTAINER="unknown"'
+    end
 end
