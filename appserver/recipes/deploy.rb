@@ -2,6 +2,14 @@ app = search("aws_opsworks_app").first
 instance = search("aws_opsworks_instance", "self:true").first # this gets the databag for the instance
 layers = instance['role'] # the attribute formerly known as 'layers' via opsworks is now found as role in the opsworks instance
 
+directory '/etc/pm2/conf.d' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  recursive true
+  action :create
+end
+
 template '/etc/pm2/conf.d/server.json' do
   source 'server.erb'
   owner 'root'
