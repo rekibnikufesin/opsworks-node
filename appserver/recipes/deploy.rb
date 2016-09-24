@@ -1,9 +1,27 @@
+app = search("aws_opsworks_app").first
+instance = search("aws_opsworks_instance", "self:true").first # this gets the databag for the instance
+layers = instance['role'] # the attribute formerly known as 'layers' via opsworks is now found as role in the opsworks instance
+
+template '/etc/pm2/conf.d/server.json' do
+  source 'server.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
+
+file '/root/.ssh/id_rsa' do
+  content app['app_source']['ssh_key']
+  owner 'root'
+  group 'root'
+  mode '0600'
+end
+
 deploy 'private_repo' do
-  repo 'https://github.com/rekibnikufesin/advanced_pm2.git'
+  repo app['app_source']['url']
   migrate false
   keep_releases 5
-   symlink_before_migrate({})
-  restart_command "cd /srv/www/app/current && npm install && pm2 startOrRestart ecosystem.json"
+  symlink_before_migrate({})
+  restart_command "cd /srv/www/app/current && npm install && pm2 startOrRestart /etc/pm2/conf.d/server.json"
   user 'root'
   deploy_to '/srv/www/app'
   action :deploy
