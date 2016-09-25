@@ -13,11 +13,11 @@
             "env"         : {
               app['environment'],
               <% if layers.include?("api-layer") %>
-                <%= "CONTAINER":"api" %>
+                <%= '"CONTAINER":"api"' %>
               <% elsif layers.include?("web-layer") %>
-                <%= "CONTAINER":"web" %>
+                <%= '"CONTAINER":"web"' %>
               <% else %>
-                <%= "CONTAINER":"unknown" %>
+                <%= '"CONTAINER":"unknown"' %>
               <% end %>
             }
         }
