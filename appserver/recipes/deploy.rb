@@ -22,6 +22,7 @@ template '/etc/pm2/conf.d/server.json' do
   owner 'root'
   group 'root'
   mode '0644'
+  variables :environments => { 'vars' => env_var }
 end
 
 file '/root/.ssh/id_rsa' do
