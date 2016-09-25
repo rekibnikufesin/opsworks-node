@@ -11,7 +11,7 @@
             "error_file"  : "/srv/www/app/current/log/out.log",
             "out_file"    : "/srv/www/app/current/log/out.log",
             "env"         : {
-              app['environment'], <%= @env_var %>
+              <%= app['environment'] %>, <%= @env_var %>
             }
         }
     ]
