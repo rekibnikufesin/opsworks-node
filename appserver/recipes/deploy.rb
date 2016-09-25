@@ -7,6 +7,8 @@ if layers.include?("api-layer")
     env_var = env_var + ',"CONTAINER":"api"'
 elsif layers.include?("web-layer")
     env_var = env_var + ',"CONTAINER":"web"'
+else
+    env_var = env_var + ',"CONTAINER":"unknown"'
 end
 
 directory '/etc/pm2/conf.d' do
