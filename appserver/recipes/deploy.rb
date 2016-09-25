@@ -1,6 +1,13 @@
 app = search("aws_opsworks_app").first
 instance = search("aws_opsworks_instance", "self:true").first # this gets the databag for the instance
 layers = instance['role'] # the attribute formerly known as 'layers' via opsworks is now found as role in the opsworks instance
+env_var = '"CONTAINER":"unknown"'
+
+if layers.include?("api-layer")
+    env_var = '"CONTAINER":"api"'
+elsif layers.include?("web-layer")
+    env_var = '"CONTAINER":"web"'
+end
 
 directory '/etc/pm2/conf.d' do
   owner 'root'

@@ -11,14 +11,7 @@
             "error_file"  : "/srv/www/app/current/log/out.log",
             "out_file"    : "/srv/www/app/current/log/out.log",
             "env"         : {
-              app['environment'],
-              <% if layers.include?("api-layer") %>
-                <%= '"CONTAINER":"api"' %>
-              <% elsif layers.include?("web-layer") %>
-                <%= '"CONTAINER":"web"' %>
-              <% else %>
-                <%= '"CONTAINER":"unknown"' %>
-              <% end %>
+              app['environment'], <%= @env_var %>
             }
         }
     ]
