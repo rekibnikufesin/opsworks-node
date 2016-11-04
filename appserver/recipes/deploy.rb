@@ -17,7 +17,7 @@ else
     env_var = env_var + '"CONTAINER":"unknown"'
 end
 
-include_recipe 'deploy_wrapper'
+include_recipe 'appserver::deploy_wrapper'
 
 git "/srv/www/app/releases/#{release}" do
   repository app['app_source']['url']
