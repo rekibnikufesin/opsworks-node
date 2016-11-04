@@ -27,6 +27,11 @@ git "/srv/www/app/releases/#{release}" do
   enable_checkout false
   action :sync
   notifies :create, 'template[/etc/pm2/conf.d/server.json]', :immediately
+  notifies :run, 'execute[app perms]', :immediately
+  notifies :run, 'execute[set file perms]', :immediately
+  notifies :run, 'execute[npm install]', :immediately
+  notifies :create, 'link[/srv/www/app/current]', :immediately
+  notifies :run, 'execute[pm2]', :immediately
 end
 
 template '/etc/pm2/conf.d/server.json' do
@@ -36,32 +41,27 @@ template '/etc/pm2/conf.d/server.json' do
   mode '0644'
   variables :environments => { 'vars' => env_var }
   action :nothing
-  notifies :run, 'execute[app perms]', :immediately
 end
 
 execute 'app perms' do
   command "chown -R root:root /srv/www/app/releases/#{release}"
   action :nothing
-  notifies :run, 'execute[set file perms]', :immediately
 end
 
 execute 'set file perms' do
   command "setfacl -Rdm g:root:rwx /srv/www/app/releases/#{release}"
   action :nothing
-  notifies :run, 'execute[npm install]', :immediately
 end
 
 execute 'npm install' do
   command "su - root -c 'cd /srv/www/app/releases/#{release} && npm install'"
   action :nothing
-  notifies :create, 'link[/srv/www/app/current]', :immediately
 end
 
 link '/srv/www/app/current' do
   to "/srv/www/app/releases/#{release}"
   link_type :symbolic
   action :nothing
-  notifies :run, 'execute[pm2]', :immediately
 end
 
 execute 'pm2' do
